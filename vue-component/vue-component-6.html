@@ -9,17 +9,22 @@ component标签可以动态切换组件 -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/iview.css">
     <title>动态组件</title>
 </head>
 <body>
     <div id="app">
         <button @click="changeComponent">点击切换组件</button>
-        <keep-alive>
+        <!-- 保存组件的状态，与数据 -->
+        <keep-alive>  
                 <component :is='curr_component'> </component>
         </keep-alive>
+        <async-example></async-example>
     </div>
     <script src="../js/vue.min.js"></script> 
+    <script src="../js/iview.min.js"></script>
     <script>
+        
         new Vue({
             el : "#app",
             data :{
@@ -27,14 +32,26 @@ component标签可以动态切换组件 -->
             },
             components :{
                 "header-one" : {
-                    template : ` <div><h1>组件1</h1>  <input type="text" /> </div>`,
-                   
-                    methods:{
+                    template : ` <div><h1>组件1</h1>  <input type="text" @change="a" v-model="curr_component" /> </div>`,
+                    data:{
                         
+                    },                    
+                    methods:{
+                        a :function(){
+                            console.log(1111)
+                        }
                     }
                 },
                 "header-two" : {
                     template : ` <div><h1>组件2    <input type="text"/></h1></div>`
+                },
+                "async-example" : function (resolve, reject) {                 //定时组件
+                    setTimeout(function () {
+                        // 向 `resolve` 回调传递组件定义
+                        resolve({
+                        template: '<div>我是异步定时组件</div>'
+                        })
+                    }, 1000)
                 }
             },
             methods : {

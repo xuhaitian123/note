@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/iview.css">
+    <title>example</title>
+    <style>
+    body,html{
+        margin: 0 ;
+        padding: 0;
+        height: 1000px
+    }
+    .header-div{
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        background-color: skyblue;
+        text-align: center;
+        position: fixed
+    }
+    .left{
+        float: left;
+        height: 50px;
+        padding: 0 10px
+    }
+    .right{
+        float: right;
+        height: 50px;
+        padding: 0 10px;
+    }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <my-header :message="name">
+            <i-button class="left" slot="left">返回</i-button>
+            <i-button class="right" slot="right">新建</i-button>
+        </my-header>
+    </div>
+    <script src="../js/vue.min.js"></script>
+    <script src="../js/iview.min.js"></script>
+    <script>
+    new Vue({
+        el :'#app',
+        data :{
+            name :"通讯录"
+        },
+        components :{
+            "my-header" : {
+                template : `<div class="header-div"><slot name="left"></slot>{{message}}<slot name="right"></slot></div>`,
+                props:{
+                    message : {
+                        type : String,
+                        default : "标题"
+                    }
+                }
+            }
+        },
+        methods : {
+
+        }
+    })
+    
+    
+    
+    </script>
+</body>
+</html>
