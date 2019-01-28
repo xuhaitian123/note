@@ -1,0 +1,74 @@
+
+
+
+
+<!-- 父组件向子组件中传值  props-->
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>父传子</title>
+</head>
+<body>
+        <script src="../js/vue.min.js"></script>
+                <div id="app">
+            <h1>{{message}}</h1>
+            <!-- 父组件向子组件中传值 ：加上子组件的接收的值的变量名  后面加上的是父组件传给子组件的变量 -->
+            <my-header :list="list"></my-header>
+            <button @click="change">改变数组中的值</button>
+        </div>
+    <script>
+        
+        new Vue({
+            el : "#app",
+            data:{
+                message:"父组件向子组件传值props",
+                list:[12342342342,23242342342345,4324234234234,42343245,5542342442343,523423445,5323423423423424,34234253,42425,]
+            },
+            components:{
+                "my-header":{
+                    template:`
+                        <div>
+                            <h2>测试组件</h2>
+                                <ul>
+                                    <li v-for="item in list">{{item}}</li>
+                                </ul>
+                        </div>`,
+                    //props 父组件向子组件传值，子组件来接收值
+                    props:{
+                        list:{
+                            type:Array,//这个是验证格式，父组件传的值必须是这个格式，否则会显示错误
+                            default:[1,2,3]//这个是设置默认值
+                        }
+                    }
+                    //data必须是函数的返回的形式，返回的格式为对象的形式
+                    // data: function(){
+                    //     return {
+                    //         list: [
+                    //             { message: 'Foo' },
+                    //             { message: 'Bar' }
+                    //         ]
+                    //     }
+                    // }
+                }
+            },
+            methods:{
+                change : function(){
+                    this.list.push('点击增加的值')
+                }
+            }
+        })
+    
+    
+    
+    </script>
+
+</body>
+</html>

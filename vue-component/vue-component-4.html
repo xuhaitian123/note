@@ -1,0 +1,94 @@
+
+
+
+<!-- 非父子组件之间传值  采用bus 创建一个实例，bus.$emit() 发布  bus.$on() 订阅 -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>非父子组件之间传值</title>
+</head>
+<body>
+        <script src="../js/vue.min.js"></script>
+        <div id="app">
+            <my-components-1></my-components-1>
+            <my-components-2 @getmessage2></my-components-2>
+        </div>
+        <script>
+            var bus = new Vue()
+            new Vue({
+                el:"#app",
+                data:{
+                
+                },
+                components:{
+                    "my-components-1" : {
+                        template:`<div>
+                            <ul>
+                                <li v-for=" item in items " @click="change" >{{item}}</li>
+                            </ul>    
+                            <h2 ref="name">兄弟组件传过来的值:   {{message}}</h2>    
+                        </div>`,
+                        data:function(){
+                            return {
+                                message : "",
+                                items :["李彦宏","马云","马化腾","王志东"]
+                            }
+                        },
+                        methods :{
+                            change : function(event){
+                                bus.$emit("getmessage1",event.target.innerHTML)
+                            },
+                        },
+                        mounted(){
+                            var this_ = this
+                            bus.$on("getmessage2",function(data){
+                                this_.message = data;
+                            })
+                        }
+                    },
+                    "my-components-2" : {
+                        template:`<div>
+                            <ul>
+                                <li v-for=" item in items " @click="change">{{item}}</li>
+                            </ul>        
+                            <h2>兄弟组件传过来的值:{{message}}</h2>
+                        </div>`,
+                        data:function(){
+                            return {
+                                message : "",
+                                items :["百度","阿里巴巴","腾讯","新浪"]
+                            }
+                        },
+                        methods :{
+                            change : function(event){
+                                bus.$emit("getmessage2",event.target.innerHTML)
+                                // console.log(event.target.innerHTML)
+                            },
+                        },
+                        mounted(){
+                            var this_ = this
+                            bus.$on("getmessage1",function(data){
+                                this_.message = data;
+                            })
+                        }
+                    }
+                },
+                methods:{
+                    
+                }
+
+
+            })
+        
+        
+        
+        </script>
+    
+</body>
+</html>

@@ -1,0 +1,102 @@
+
+
+
+<!-- 父组件下面两个子组件，同时向父组件传值，父组件也可以向子组件中传值 -->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>两个子组件传值给父组件</title>
+</head>
+<body>
+        <script src="../js/vue.min.js"></script>
+        <div id="app">
+            <my-components-1 @change="getChildData1" :items="list"></my-components-1>
+            <my-components-2 @change="getChildData2"></my-components-2>
+            <h2>我是接受第一个子组件传来的值：{{message}}</h2>
+            <h2>我是接受第二个子组件传来的值：{{content}}</h2>
+            <button @click="toChild">点击向子组件中传值</button>
+        </div>
+        <script>
+            new Vue({
+                el:"#app",
+                data:{
+                    message:"我是父组件的默认值",
+                    content:'我是父组件的默认值',
+                    list:[1,2,3,4,5,6,7,8,9]
+                },
+                components:{
+                    "my-components-1" : {
+                        template:`<div>
+                            <ul>
+                                <li v-for=" item in items " @click="change">{{item}}</li>
+                            </ul>        
+                        </div>`,
+                        // data:function(){
+                        //     return {
+                        //         items :["我是第一个子组件的第一个值","我是第一个子组件的第二个值","我是第一个子组件的第三个值","我是第一个子组件的第四个值"]
+                        //     }
+                        // },
+                        props:{
+                            items:{
+                                type:Array,
+                                default:["我是第一个子组件的第一个值","我是第一个子组件的第二个值","我是第一个子组件的第三个值","我是第一个子组件的第四个值"]
+                            }
+                        },
+                        methods :{
+                            change : function(event){
+                                this.$emit("change",event.target.innerHTML)
+                                // console.log(event.target.innerHTML)
+                            }  
+                        }
+                    },
+                    "my-components-2" : {
+                        template:`<div>
+                            <ul>
+                                <li v-for=" item in items " @click="change">{{item}}</li>
+                            </ul>        
+                        </div>`,
+                        data:function(){
+                            return {
+                                items :["我是第二个子组件的第一个值","我是第二个子组件的第二个值","我是第二个子组件的第三个值","我是第二个子组件的第四个值"]
+                            }
+                        },
+                        methods :{
+                            change : function(event){
+                                this.$emit("change",event.target.innerHTML)
+                                // console.log(event.target.innerHTML)
+                            }  
+                        }
+                    }
+                },
+                methods:{
+                    getChildData1 :function(data){
+                        // console.log(data)
+                        this.message = data
+                    },
+                    getChildData2 :function(data){
+                        // console.log(data)
+                        this.content = data
+                    },
+                    toChild:function(){
+                        var list = this.list;
+                        list.push('点击按钮增加数组的值')
+                        this.list =  list
+                    }
+                }
+
+
+            })
+        
+        
+        
+        </script>
+    
+</body>
+</html>

@@ -1,0 +1,53 @@
+
+<!-- <keep-alive></keep-alive>可以将组件的内容保存起来
+component标签可以动态切换组件 -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>动态组件</title>
+</head>
+<body>
+    <div id="app">
+        <button @click="changeComponent">点击切换组件</button>
+        <keep-alive>
+                <component :is='curr_component'> </component>
+        </keep-alive>
+    </div>
+    <script src="../js/vue.min.js"></script>
+    <script>
+        new Vue({
+            el : "#app",
+            data :{
+                curr_component : 'header-one',
+            },
+            components :{
+                "header-one" : {
+                    template : ` <div><h1>组件1</h1>  <input type="text" /> </div>`,
+                   
+                    methods:{
+                        
+                    }
+                },
+                "header-two" : {
+                    template : ` <div><h1>组件2    <input type="text"/></h1></div>`
+                }
+            },
+            methods : {
+                changeComponent : function (){
+                    this.curr_component =  this.curr_component == "header-one" ? "header-two" : "header-one"
+                }
+            }
+
+        })
+    
+    
+    
+    </script>
+    
+</body>
+</html>

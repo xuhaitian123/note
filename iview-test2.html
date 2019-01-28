@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #layout{
+            width: 400px;
+            height: 500px;
+            background-color: skyblue;
+        }
+    
+    
+    </style>
+</head>
+<body>
+    <script src="//vuejs.org/js/vue.min.js"></script>
+    <link rel="stylesheet" href="//unpkg.com/iview/dist/styles/iview.css">
+    <script src="//unpkg.com/iview/dist/iview.min.js"></script>
+        <div id="layout">
+                <i-form ref="formCustom" :model="formCustom" :rules="ruleCustom" :label-width="80">
+                        <form-Item label="Password" prop="passwd">
+                            <Input type="password" ></Input>
+                        </form-Item>
+                        <form-Item label="Confirm" prop="passwdCheck">
+                            <Input type="password" ></Input>
+                        </form-Item>
+                        <form-Item label="Age" prop="age">
+                            <Input type="text"  number></Input>
+                        </form-Item>
+                        <form-Item>
+                            <i-button type="primary" @click="handleSubmit('formCustom')">Submit</i-button>
+                            <Button @click="handleReset('formCustom')" style="margin-left: 8px">Reset</Button>
+                        </form-Item>
+                    </i-form>
+        </div>
+
+
+
+    <script>
+        new Vue({
+            el:"#layout",
+            data:{
+                
+                formCustom: {
+                    passwd: '',
+                    passwdCheck: '',
+                    age: ''
+                },
+                ruleCustom: {
+                    passwd: [
+                        { validator: validatePass, trigger: 'blur' }
+                    ],
+                    passwdCheck: [
+                        { validator: validatePassCheck, trigger: 'blur' }
+                    ],
+                    age: [
+                        { validator: validateAge, trigger: 'blur' }
+                    ]
+                }
+            },
+            methods:{
+                handleSubmit (name) {
+                    this.$refs[name].validate((valid) => {
+                        if (valid) {
+                            this.$Message.success('Success!');
+                        } else {
+                            this.$Message.error('Fail!');
+                        }
+                    })
+                },
+                handleReset (name) {
+                    this.$refs[name].resetFields();
+                }
+                }
+        })
+    
+    
+    
+    
+    
+    
+    
+    </script>
+</body>
+</html>
