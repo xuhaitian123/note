@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    /* html,body{
+        margin: 0;
+        padding: 0
+    } */
+    /* #app{
+        background: #fff;
+        width: 100%;
+        height: 300px;
+        padding: 0;
+        margin: 0
+    } */
+    /* .bg{
+        background-image: url("../image/20160915cf83922aeab03cc991a09347c3070717.jpg");
+        width: 100%;
+        height: 1000px;
+        position: absolute;
+        z-index: -1;
+    } */
+    
+    </style>
+</head>
+<body>
+    <script src="../js/vue.min.js"></script>
+    <script src="../js/vuex.js"></script>
+    <div id="app">
+        <div class="bg">
+
+        </div>
+        <p>FullName: {{fullName}}</p>
+        <p>info: {{info}}</p>
+        <p>FirstName: <input type="text" v-model="firstName"></p>
+        <p>obj.name: <input type="text" v-model="obj.name"></p>
+        <p>obj.age: <input type="text" v-model="obj.age"></p>
+        <p>obj.address: <input type="text" v-model="obj.address"></p>
+    </div>
+        
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                info:"",
+                firstName: 'Dawei',
+                lastName: 'Lou',
+                fullName: '',
+                obj :{
+                    name :"小明",
+                    age : "18",
+                    address : "北京"
+                }
+            },
+            watch: {
+                //进入页面不会立即执行handler的方法，在firstname改变后才会改变fullname
+                // firstName(newName, oldName) {
+                //     this.fullName = newName + ' ' + this.lastName;
+                //     console.log('obj.a changed');
+                // },
+                //进入页面会执行handler的方法，改变fullname
+                firstName: {
+                    handler(newName, oldName) {
+                        this.fullName = newName + ' ' + this.lastName;
+                    },
+                    // 代表在wacth里声明了firstName这个方法之后立即先去执行handler方法
+                    immediate: true            
+                    // immediate:true代表如果在 wacth 里声明了 firstName 之后
+                    //就会立即先去执行里面的handler方法，如果为 false就跟我们以前的效果一样，不会在绑定的时候就执行。 
+                },
+                // 直接监听obj会出现问题，obj中一个属性改变就会触发事件，性能开销较大
+                // obj :{
+                //     handler (obj) {
+                //         this.info  = obj.name + "今年" +obj.age + "岁" + "住在" + obj.address;
+                //     },
+                //     immediate :true,
+                //     deep:true              //可以深度监听对象里面的属性的变化
+                // },
+                //可以监听字符串来实现深度监听，但是传的值是我们监听的这一个属性
+                "obj.name" :{
+                    handler :function (obj) {
+                        this.info  =  obj.name ;
+                        console.log(this.info)
+                    }.bind(this),
+                    immediate :true,
+                    // deep:true              //可以深度监听对象里面的属性的变化
+                },
+            } 
+        })
+        
+        
+        
+        
+        </script>
+         
+</body>
+</html>
