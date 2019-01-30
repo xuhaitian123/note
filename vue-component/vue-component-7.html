@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vuex状态管理</title>
+</head>
+<body>
+        <script src="../js/vue.min.js"></script>
+        <script src="../js/vuex.js"></script>
+        <div id="app">
+            <my-components-1></my-components-1>
+            {{count}}
+            <my-components-2 ></my-components-2>
+        </div>
+        <script>
+            // 共享数据可以使用vuex来管理
+            var store = new Vuex.Store({
+                state: {
+                    count : 0
+                },
+                // 可以再mutations中添加事件来处理我们的共享数据，也可以直接在我们的组件或者我们的项目的任何地方使用
+                //mutations里面的方法必须是同步的方法，不支持异步的方法
+                mutations:{
+                    add : function(state){
+                        state.count++
+                    }
+                },
+                //功能与mutations的作用相同，但是支持异步方法
+                actions: {
+                    increment (context) {
+                        console.log(context)
+                        context.commit('increment')
+                    }
+                }
+                
+            })
+            new Vue({
+                el:"#app",
+                data:{
+                    // count : 0
+                },
+                //计算属性来接收store的值
+                computed : {
+                    count :function(){
+                        return store.state.count
+                    }
+                },
+                components:{
+                    "my-components-1" : {
+                        template : `<button @click="add">+</button>`,
+                        methods :{
+                            add : function(){
+                            // 这里我们可以使用commit来提交我们的在store中定义和方法，也可以直接使用store中的变量直接处理数据
+                                store.commit('add')
+                            }
+                        }
+                    },
+                    "my-components-2" : {
+                        template : `<button @click="remove">-</button>`,
+                        methods :{
+                            remove : function(){
+                                //使用变量直接处理数据
+                                store.state.count--
+                            }
+                        }
+                    }
+                },
+                methods:{
+                    
+                }
+
+
+            })
+        
+        
+        
+        </script>
+</body>
+</html>

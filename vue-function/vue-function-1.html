@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/vue/2.1.3/vue.js"></script>
+</head>
+<body>
+
+<div id="app">
+     <p>{{ message }}</p>
+     <a href="https://juejin.im/entry/5aee8fbb518825671952308c">详解的链接</a>
+</div>
+
+<script type="text/javascript">
+    
+  var app = new Vue({
+      el: '#app',
+      data: {
+          message : "生命周期函数详解" 
+      },
+      //常用于初始化非响应式变量
+       beforeCreate: function () {
+                console.group('beforeCreate 创建前状态===============》');
+               console.log("%c%s", "color:red" , "el     : " + this.$el); //undefined
+               console.log("%c%s", "color:red","data   : " + this.$data); //undefined 
+               console.log("%c%s", "color:red","message: " + this.message)  
+        },
+        //创建完毕的状态，常用于简单的ajax请求，页面的初始化
+        created: function () {
+            console.group('created 创建完毕状态===============》');
+            console.log("%c%s", "color:red","el     : " + this.$el); //undefined
+               console.log("%c%s", "color:red","data   : " + this.$data); //已被初始化 
+               console.log("%c%s", "color:red","message: " + this.message); //已被初始化 
+        },
+        beforeMount: function () {
+            console.group('beforeMount 挂载前状态===============》');
+            console.log("%c%s", "color:red","el     : " + (this.$el)); //已被初始化
+            console.log(this.$el);
+               console.log("%c%s", "color:red","data   : " + this.$data); //已被初始化  
+               console.log("%c%s", "color:red","message: " + this.message); //已被初始化  
+        },
+        //常用的函数，挂载结束时执行，可以再页面挂载完成后执行一些请求，页面挂载完成后才去请求数据，常用于获取VNode信息和操作，ajax请求
+        mounted: function () {
+            console.group('mounted 挂载结束状态===============》');
+            console.log("%c%s", "color:red","el     : " + this.$el); //已被初始化
+            console.log(this.$el);    
+               console.log("%c%s", "color:red","data   : " + this.$data); //已被初始化
+               console.log("%c%s", "color:red","message: " + this.message); //已被初始化 
+        },
+        //适合在更新之前访问现有的DOM，比如手动移除已添加的事件监听器
+        beforeUpdate: function () {
+            console.group('beforeUpdate 更新前状态===============》');
+            console.log("%c%s", "color:red","el     : " + this.$el);
+            console.log(this.$el);   
+               console.log("%c%s", "color:red","data   : " + this.$data); 
+               console.log("%c%s", "color:red","message: " + this.message); 
+        },
+        //避免在这个钩子函数中操作数据，可能陷入死循环
+        updated: function () {
+            console.group('updated 更新完成状态===============》');
+            console.log("%c%s", "color:red","el     : " + this.$el);
+            console.log(this.$el); 
+               console.log("%c%s", "color:red","data   : " + this.$data); 
+               console.log("%c%s", "color:red","message: " + this.message); 
+        },
+        //常用于销毁定时器、解绑全局事件、销毁插件对象等操作
+        beforeDestroy: function () {
+            console.group('beforeDestroy 销毁前状态===============》');
+            console.log("%c%s", "color:red","el     : " + this.$el);
+            console.log(this.$el);    
+               console.log("%c%s", "color:red","data   : " + this.$data); 
+               console.log("%c%s", "color:red","message: " + this.message); 
+        },
+        destroyed: function () {
+            console.group('destroyed 销毁完成状态===============》');
+            console.log("%c%s", "color:red","el     : " + this.$el);
+            console.log(this.$el);  
+               console.log("%c%s", "color:red","data   : " + this.$data); 
+               console.log("%c%s", "color:red","message: " + this.message)
+        }
+    })
+</script>
+</body>
+</html>
