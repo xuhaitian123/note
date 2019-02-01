@@ -1,11 +1,20 @@
 
+
+
+<!-- 不要在 computed 或 watch 中，去修改所依赖的数据的值，尤其是 computed；如果这样做，可能导致一个无线循环的触发。 -->
+<!-- 监听可以使用watch还可以使用计算属性computed来 -->
+<!-- 当我们改变 number 时，整个应用会重新渲染，vue 会被数据重新渲染到 dom 中。这时，如果我们使用 getName 方法，随着渲染，
+    方法也会被调用，而 computed 不会重新进行计算，从而性能开销比较小。当新的值需要大量计算才能得到，缓存的意义就非常大。 -->
+<!-- 如果 computed 所依赖的数据发生改变时，计算属性才会重新计算，并进行缓存；当改变其他数据时，computed 属性 并不会重新计算，从而提升性能。 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <!-- 添加title图标 -->
+    <link rel="shortcut icon" href="../image/bitbug_favicon.ico" />  
+    <title>监听属性</title>
     <style>
     /* html,body{
         margin: 0;
@@ -41,6 +50,7 @@
         <p>obj.name: <input type="text" v-model="obj.name"></p>
         <p>obj.age: <input type="text" v-model="obj.age"></p>
         <p>obj.address: <input type="text" v-model="obj.address"></p>
+        
     </div>
         
     <script>
@@ -57,13 +67,17 @@
                     address : "北京"
                 }
             },
+            //watch方法的value可以接收两个参数，第一个是变化后的值，第二个是变化前的值，
+            // 还可以是一个方法，我们可以再methods中定义方法
             watch: {
+                //监听的方法一
                 //进入页面不会立即执行handler的方法，在firstname改变后才会改变fullname
                 // firstName(newName, oldName) {
                 //     this.fullName = newName + ' ' + this.lastName;
                 //     console.log('obj.a changed');
                 // },
                 //进入页面会执行handler的方法，改变fullname
+                //监听的方法二
                 firstName: {
                     handler(newName, oldName) {
                         this.fullName = newName + ' ' + this.lastName;
@@ -74,6 +88,7 @@
                     //就会立即先去执行里面的handler方法，如果为 false就跟我们以前的效果一样，不会在绑定的时候就执行。 
                 },
                 // 直接监听obj会出现问题，obj中一个属性改变就会触发事件，性能开销较大
+                //深度监听的方法一
                 // obj :{
                 //     handler (obj) {
                 //         this.info  = obj.name + "今年" +obj.age + "岁" + "住在" + obj.address;
@@ -83,20 +98,28 @@
                 // },
                 //可以监听字符串来实现深度监听，但是传的值是我们监听的这一个属性
                 "obj.name" :{
-                    handler :function (obj) {
-                        this.info  =  obj.name ;
-                        console.log(this.info)
-                    }.bind(this),
+                    handler (obj) {
+                        console.log(obj)//只能监听现在的属性，而且不能获取外面的值，比如this.info
+                    },
                     immediate :true,
-                    // deep:true              //可以深度监听对象里面的属性的变化
                 },
-            } 
+                //深度监听的第二种方法
+                "obj.name" :{
+                    handler : 'set',  // 可以接收方法
+                    immediate :true,
+                },
+            },
+            methods :{
+                set : function(new_value,old_value){
+                    this.info  = new_value
+                }
+            }
         })
-        
-        
-        
         
         </script>
          
 </body>
 </html>
+
+
+<!-- 现在有一个问题是watch监听时，深度监听的时候监听对象的一个属性，用字符串监听时，参数只能是当前监听的值，并且不能获取外面的值，比如this.xxx -->
